@@ -1,0 +1,63 @@
+<div class="player-container" id="playerContainer">
+  <iframe
+    src="https://aux.canalesonline24.workers.dev/gigared?id=nombre_de_canal_que_figura_en_el_mpd"
+    allow="encrypted-media; fullscreen"
+    allowfullscreen
+    scrolling="no">
+  </iframe>
+</div>
+
+<style>
+/* Contenedor normal de la web */
+.player-container {
+  position: relative;      /* dentro del flujo normal */
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  margin: 20px auto;
+  background: #000;
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  z-index: 1;
+}
+
+/* Contenedor “simula rotación” visual del iframe */
+.player-container.rotated {
+  transform: rotate(90deg);   /* solo gira el rectángulo del iframe */
+  transform-origin: center center;
+}
+
+/* Iframe normal dentro del contenedor */
+.player-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+</style>
+
+<script>
+const container = document.getElementById('playerContainer');
+
+/* Detecta orientación y aplica clase */
+function handleOrientation() {
+  if (window.innerWidth > window.innerHeight) {
+    container.classList.add('rotated');
+  } else {
+    container.classList.remove('rotated');
+  }
+}
+
+window.addEventListener('resize', handleOrientation);
+window.addEventListener('orientationchange', handleOrientation);
+handleOrientation();
+
+/* Fullscreen al doble click del contenedor */
+container.addEventListener('dblclick', () => {
+  if (!document.fullscreenElement) {
+    container.requestFullscreen();
+  } else {
+    document.exitFullscreen();
+  }
+});
+</script>
